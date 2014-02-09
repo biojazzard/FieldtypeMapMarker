@@ -3,32 +3,83 @@
  *
  */
 
+// Create an array of styles.
+
+var styles = [
+    {
+      featureType: 'water',
+      elementType: 'all',
+      stylers: [
+        { hue: '#4194d8' },
+        { saturation: 38 },
+        { lightness: -28 },
+        { visibility: 'simplified' }
+      ]
+    },{
+      featureType: 'landscape',
+      elementType: 'all',
+      stylers: [
+        { hue: '#323232' },
+        { saturation: -100 },
+        { lightness: -57 },
+        { visibility: 'simplified' }
+      ]
+    },{
+      featureType: 'road',
+      elementType: 'geometry',
+      stylers: [
+        { hue: '#4194d8' },
+        { saturation: -34 },
+        { lightness: -14 },
+        { visibility: 'on' }
+      ]
+    },{
+      featureType: 'poi',
+      elementType: 'all',
+      stylers: [
+        { hue: '#FFFFFF' },
+        { saturation: -100 },
+        { lightness: 100 },
+        { visibility: 'off' }
+      ]
+    }
+  ];
+
 var InputfieldMapMarker = {
 
 	options: {
 		zoom: 12, // mats, previously 5
 		draggable: true, // +mats
 		center: null,
-		mapTypeId: google.maps.MapTypeId.HYBRID,
-		scrollwheel: false,	
+		mapTypeId: google.maps.MapTypeId.ROADMAP,
+		scrollwheel: false,
 		mapTypeControlOptions: {
-			style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
-		},
+      mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']
+    },
 		scaleControl: false
 	},	
+
 
 	init: function(mapId, lat, lng, zoom, mapType) {
 
 		var options = InputfieldMapMarker.options; 
 
 		if(zoom < 1) zoom = 12; 
-		options.center = new google.maps.LatLng(lat, lng); 	
+		options.center = new google.maps.LatLng(lat, lng);
 		options.zoom = parseInt(zoom); 
 
 		if(mapType == 'SATELLITE') options.mapTypeId = google.maps.MapTypeId.SATELLITE; 
 			else if(mapType == 'ROADMAP') options.mapTypeId = google.maps.MapTypeId.ROADMAP; 
 
-		var map = new google.maps.Map(document.getElementById(mapId), options); 	
+		// Create a new StyledMapType object, passing it the array of styles,
+		// as well as the name to be displayed on the map type control.
+		var styledMap = new google.maps.StyledMapType(styles, {name: "Styled Map"});
+
+		var map = new google.maps.Map(document.getElementById(mapId), options);
+
+		//Associate the styled map with the MapTypeId and set it to display.
+		map.mapTypes.set('map_style', styledMap);
+		map.setMapTypeId('map_style');
 
 		var marker = new google.maps.Marker({
 			position: options.center, 
