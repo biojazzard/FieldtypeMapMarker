@@ -41,7 +41,7 @@ function MarkupGoogleMap() {
   this.options = {
     zoom: 10, 
     center: null, 
-    mapTypeId: google.maps.MapTypeId.ROADMAP, 
+    mapTypeId: google.maps.MapTypeId.TERRAIN, 
     scrollwheel: false, 
     mapTypeControlOptions: {
       style: google.maps.MapTypeControlStyle.DROPDOWN_MENU  
@@ -50,40 +50,22 @@ function MarkupGoogleMap() {
   };
   this.styles = [
     {
-      featureType: 'water',
-      elementType: 'all',
       stylers: [
-        { hue: '#4194d8' },
-        { saturation: 38 },
-        { lightness: -28 },
-        { visibility: 'simplified' }
+        { hue: "#7cbecb" },
+        { saturation: -20 }
       ]
     },{
-      featureType: 'landscape',
-      elementType: 'all',
+      featureType: "road",
+      elementType: "geometry",
       stylers: [
-        { hue: '#323232' },
-        { saturation: -100 },
-        { lightness: -57 },
-        { visibility: 'simplified' }
-      ]
-    },{
-      featureType: 'road',
-      elementType: 'geometry',
-      stylers: [
-        { hue: '#4194d8' },
-        { saturation: -34 },
-        { lightness: -14 },
-        { visibility: 'on' }
-      ]
-    },{
-      featureType: 'poi',
-      elementType: 'all',
-      stylers: [
-        { hue: '#FFFFFF' },
-        { saturation: -100 },
         { lightness: 100 },
-        { visibility: 'off' }
+        { visibility: "simplified" }
+      ]
+    },{
+      featureType: "road",
+      elementType: "labels",
+      stylers: [
+        { visibility: "off" }
       ]
     }
   ];
