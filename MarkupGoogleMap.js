@@ -27,6 +27,8 @@
  *
  */
 
+var MY_MAPTYPE_ID = 'dermo';
+
 function MarkupGoogleMap() {
 
   this.map = null;
@@ -41,34 +43,38 @@ function MarkupGoogleMap() {
   this.options = {
     zoom: 10, 
     center: null, 
-    mapTypeId: google.maps.MapTypeId.TERRAIN, 
-    scrollwheel: false, 
     mapTypeControlOptions: {
-      style: google.maps.MapTypeControlStyle.DROPDOWN_MENU  
-    }, 
+      mapTypeIds: [google.maps.MapTypeId.TERRAIN, MY_MAPTYPE_ID]
+    },
+    mapTypeId: MY_MAPTYPE_ID,
     scaleControl: false
   };
+
   this.styles = [
     {
       stylers: [
-        { hue: "#7cbecb" },
-        { saturation: -20 }
+        { hue: '#7cbecb' },
+        { visibility: 'on' },
+        { gamma: 0.5 },
+        { weight: 0.5 }
       ]
     },{
-      featureType: "road",
-      elementType: "geometry",
+      featureType: 'administrative.province',
+      elementType: 'labels.text',
       stylers: [
-        { lightness: 100 },
-        { visibility: "simplified" }
+        { 'visibility': 'on' }
       ]
     },{
-      featureType: "road",
-      elementType: "labels",
+      featureType: 'administrative.country',
       stylers: [
-        { visibility: "off" }
+        { 'visibility': 'on' }
       ]
     }
   ];
+
+  this.styledMapOptions = {
+    name: 'Dermo'
+  };
 
   this._currentURL = '';
 
@@ -76,12 +82,12 @@ function MarkupGoogleMap() {
     if(lat !== 0) this.options.center = new google.maps.LatLng(lat, lng);
     // Create a new StyledMapType object, passing it the array of styles,
     // as well as the name to be displayed on the map type control.
-    this.styledMap = new google.maps.StyledMapType(this.styles, {name: "Styled Map"});
+    this.styledMap = new google.maps.StyledMapType(this.styles, this.styledMapOptions);
     // Original
     this.map = new google.maps.Map(document.getElementById(mapID), this.options);
     //Associate the styled map with the MapTypeId and set it to display.
-    this.map.mapTypes.set('map_style', this.styledMap);
-    this.map.setMapTypeId('map_style');
+    this.map.mapTypes.set(MY_MAPTYPE_ID, this.styledMap);
+    this.map.setMapTypeId(MY_MAPTYPE_ID);
   };
 
   this.setOption = function(key, value) {

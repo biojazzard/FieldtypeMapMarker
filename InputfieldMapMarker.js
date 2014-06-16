@@ -8,21 +8,21 @@
 var styles = [
   {
     stylers: [
-      { hue: "#7cbecb" },
-      { saturation: -20 }
+      { hue: '#7cbecb' },
+      { visibility: 'on' },
+      { gamma: 0.5 },
+      { weight: 0.5 }
     ]
   },{
-    featureType: "road",
-    elementType: "geometry",
+    featureType: 'administrative.province',
+    elementType: 'labels.text',
     stylers: [
-      { lightness: 100 },
-      { visibility: "simplified" }
+      { 'visibility': 'on' }
     ]
   },{
-    featureType: "road",
-    elementType: "labels",
+    featureType: 'administrative.country',
     stylers: [
-      { visibility: "off" }
+      { 'visibility': 'on' }
     ]
   }
 ];

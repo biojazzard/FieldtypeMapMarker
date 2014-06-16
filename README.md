@@ -1,4 +1,12 @@
-# FieldtypeMapMarker Module for ProcessWire 
+# FieldtypeMapMarker Module for ProcessWire
+
+Please note that this is a fork!!!
+
+Added: Custom COlors in Google Maps
+
+Please read original info or refer to the original project:
+
+
 
 This Fieldtype for ProcessWire holds an address or location name, and automatically
 geocodes the address to latitude/longitude using Google Maps API. The resulting 
