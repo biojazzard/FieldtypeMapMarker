@@ -27,7 +27,7 @@
  *
  */
 
-var MY_MAPTYPE_ID = 'dermo';
+var MY_MAPTYPE_ID = 'BOXCALF';
 
 function MarkupGoogleMap() {
 
@@ -53,7 +53,7 @@ function MarkupGoogleMap() {
   this.styles = [
     {
       stylers: [
-        { hue: '#7cbecb' },
+        { hue: '#9c9c9c' },
         { visibility: 'on' },
         { gamma: 0.5 },
         { weight: 0.5 }
@@ -73,7 +73,7 @@ function MarkupGoogleMap() {
   ];
 
   this.styledMapOptions = {
-    name: 'Dermo'
+    name: 'BOXCALF'
   };
 
   this._currentURL = '';

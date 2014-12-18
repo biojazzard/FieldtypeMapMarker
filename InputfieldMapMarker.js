@@ -8,7 +8,7 @@
 var styles = [
   {
     stylers: [
-      { hue: '#7cbecb' },
+      { hue: '#9c9c9c' },
       { visibility: 'on' },
       { gamma: 0.5 },
       { weight: 0.5 }
