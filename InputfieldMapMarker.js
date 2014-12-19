@@ -5,26 +5,132 @@
 
 // Create an array of styles.
 
+/* SHOWN ON ADMIN */
+
+var mapOptions = {
+	zoom: 11,
+	center: new google.maps.LatLng(50.957433837969454, -114.20762548217772),
+	styles: mapStyle
+};
+
 var styles = [
-  {
-    stylers: [
-      { hue: '#9c9c9c' },
-      { visibility: 'on' },
-      { gamma: 0.5 },
-      { weight: 0.5 }
-    ]
-  },{
-    featureType: 'administrative.province',
-    elementType: 'labels.text',
-    stylers: [
-      { 'visibility': 'on' }
-    ]
-  },{
-    featureType: 'administrative.country',
-    stylers: [
-      { 'visibility': 'on' }
-    ]
-  }
+    {
+        "featureType": "all",
+        "elementType": "geometry.fill",
+        "stylers": [
+            {
+                "color": "#cccccc"
+            },
+            {
+                "weight": 0.1
+            },
+            {
+                "lightness": 68
+            }
+        ]
+    },
+    {
+        "featureType": "poi",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "simplified"
+            },
+            {
+                "saturation": -100
+            },
+            {
+                "lightness": 10
+            }
+        ]
+    },
+    {
+        "featureType": "landscape",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "on"
+            },
+            {
+                "saturation": -100
+            },
+            {
+                "lightness": 65
+            }
+        ]
+    },
+    {
+        "featureType": "road.highway",
+        "elementType": "all",
+        "stylers": [
+            {
+                "saturation": -100
+            }
+        ]
+    },
+    {
+        "featureType": "road.arterial",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "on"
+            },
+            {
+                "saturation": -100
+            },
+            {
+                "lightness": 30
+            }
+        ]
+    },
+    {
+        "featureType": "road.local",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "on"
+            },
+            {
+                "saturation": -100
+            },
+            {
+                "lightness": 40
+            }
+        ]
+    },
+    {
+        "featureType": "transit",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "simplified"
+            },
+            {
+                "saturation": -100
+            }
+        ]
+    },
+    {
+        "featureType": "administrative.province",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "saturation": -100
+            },
+            {
+                "lightness": -25
+            }
+        ]
+    }
 ];
 
 var InputfieldMapMarker = {

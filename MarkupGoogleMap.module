@@ -137,7 +137,13 @@ class MarkupGoogleMap extends WireData implements Module {
 	}
 
 	public function getGMapScript() {
-		return "<script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?sensor=false'></script>";
+		return '<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>';
+	}
+
+	/* Mod. biojazzard 12.2014 */
+
+	public function getCustomScript($scriptName = 'richmarker', $scriptSuffix = '-compiled') {
+		return "<script src='{$this->config->urls->MarkupGoogleMap}{$scriptName}{$scriptSuffix}.js'></script>";
 	}
 
 	public function render($pageArray, $fieldName, array $options = array()) {

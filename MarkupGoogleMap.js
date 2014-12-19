@@ -27,6 +27,14 @@
  *
  */
 
+document.addEventListener('DOMContentLoaded', function(){
+
+  console.log("Vanila!");
+
+});
+
+/* SHOWN ON FRONTEND */
+
 var MY_MAPTYPE_ID = 'BOXCALF';
 
 function MarkupGoogleMap() {
@@ -52,23 +60,121 @@ function MarkupGoogleMap() {
 
   this.styles = [
     {
-      stylers: [
-        { hue: '#9c9c9c' },
-        { visibility: 'on' },
-        { gamma: 0.5 },
-        { weight: 0.5 }
-      ]
-    },{
-      featureType: 'administrative.province',
-      elementType: 'labels.text',
-      stylers: [
-        { 'visibility': 'on' }
-      ]
-    },{
-      featureType: 'administrative.country',
-      stylers: [
-        { 'visibility': 'on' }
-      ]
+        "featureType": "all",
+        "elementType": "geometry.fill",
+        "stylers": [
+            {
+                "color": "#cccccc"
+            },
+            {
+                "weight": 0.1
+            },
+            {
+                "lightness": 68
+            }
+        ]
+    },
+    {
+        "featureType": "poi",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "simplified"
+            },
+            {
+                "saturation": -100
+            },
+            {
+                "lightness": 10
+            }
+        ]
+    },
+    {
+        "featureType": "landscape",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "on"
+            },
+            {
+                "saturation": -100
+            },
+            {
+                "lightness": 65
+            }
+        ]
+    },
+    {
+        "featureType": "road.highway",
+        "elementType": "all",
+        "stylers": [
+            {
+                "saturation": -100
+            }
+        ]
+    },
+    {
+        "featureType": "road.arterial",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "on"
+            },
+            {
+                "saturation": -100
+            },
+            {
+                "lightness": 30
+            }
+        ]
+    },
+    {
+        "featureType": "road.local",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "on"
+            },
+            {
+                "saturation": -100
+            },
+            {
+                "lightness": 40
+            }
+        ]
+    },
+    {
+        "featureType": "transit",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "simplified"
+            },
+            {
+                "saturation": -100
+            }
+        ]
+    },
+    {
+        "featureType": "administrative.province",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "saturation": -100
+            },
+            {
+                "lightness": -25
+            }
+        ]
     }
   ];
 
@@ -77,6 +183,19 @@ function MarkupGoogleMap() {
   };
 
   this._currentURL = '';
+
+  this.setMarkerContent = function(marker, text, id, selector) {
+    var item = document.getElementById(id);
+    items = document.body.querySelectorAll(selector);
+    //content = item.textContent;
+    marker.setContent(text);
+  }
+
+  this.setJqueryMarkerContent = function(marker, id) {
+    var content = document.getElementById('contact-headline');
+    console.log(content);
+    marker.setContent(content);
+  }
 
   this.init = function(mapID, lat, lng) {
     if(lat !== 0) this.options.center = new google.maps.LatLng(lat, lng);
@@ -88,6 +207,7 @@ function MarkupGoogleMap() {
     //Associate the styled map with the MapTypeId and set it to display.
     this.map.mapTypes.set(MY_MAPTYPE_ID, this.styledMap);
     this.map.setMapTypeId(MY_MAPTYPE_ID);
+
   };
 
   this.setOption = function(key, value) {
@@ -131,7 +251,7 @@ function MarkupGoogleMap() {
     if(lat === 0.0) return;
 
     var latLng = new google.maps.LatLng(lat, lng); 
-    var zIndex = 99999 + this.numMarkers;
+    var zIndex = 99990 + this.numMarkers;
 
     var markerOptions = {
       position: latLng, 
@@ -140,10 +260,30 @@ function MarkupGoogleMap() {
       zIndex: zIndex
     }; 
 
+    var markerOptions = {
+      position: latLng, 
+      map: this.map,
+      linkURL: '',
+      zIndex: zIndex
+    }; 
+
+    var richmarkerOptions = {
+      position: latLng, 
+      map: this.map,
+      draggable: true,
+      content: '<div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title">BOXCALF</h3></div><div class="panel-body">Elcano 11, Bilbao</div></div>'
+    };
+
     if(icon.length > 0) markerOptions.icon = icon;
       else if(this.icon.length > 0) markerOptions.icon = this.icon;
 
-    var marker = new google.maps.Marker(markerOptions); 
+    var marker = new google.maps.Marker(markerOptions);
+
+    var richmarker = new RichMarker(richmarkerOptions);
+
+    this.setMarkerContent(richmarker, richmarkerOptions.content, 'contactHeadline', '.credits');
+
+    richmarker.setMap(this.map);
 
     if(url.length > 0) marker.linkURL = url;
     if(this.hoverBox) marker.hoverBoxTitle = title; 
@@ -189,7 +329,16 @@ function MarkupGoogleMap() {
       google.maps.event.addListener(marker, 'mouseout', function(e) {
         $hoverBox.hide();
         $(document).unbind("mousemove", mouseMove);
-      }); 
+      });
+
+      google.maps.event.addListener(richmarker, 'position_changed', function() {
+        log('Marker position: ' + marker.getPosition());
+      });
+
+      var count = 1;
+      google.maps.event.addListener(richmarker, 'click', function() {
+        console.log('richmarker clicked: ' + count++);
+      });
 
     }
   };
@@ -213,4 +362,7 @@ function MarkupGoogleMap() {
     });
   };
 }
+
+
+
 
