@@ -112,7 +112,8 @@ class MarkupGoogleMap extends WireData implements Module {
 	public function getOptions($fieldName) {
 
 		static $n = 0; 
-		$field = $this->fields->get($fieldName); 
+		$field = $this->fields->get($fieldName);
+		$template = $this->url;
 		if(!$field) throw new WireException("Unknown field: $fieldName"); 
 
 		return array(
@@ -131,8 +132,9 @@ class MarkupGoogleMap extends WireData implements Module {
 			'class' => "MarkupGoogleMap", 
 			'lat' => $field->defaultLat,
 			'lng' => $field->defaultLng,
-			'icon' => '', // url to icon (blank=use default)
+			'icon' => $this->config->urls->MarkupGoogleMap.'/map.svg', // url to icon (blank=use default)
 			'n' => $n, 
+			'markerPosition' => 'class_name',
 			);
 	}
 
@@ -187,7 +189,7 @@ class MarkupGoogleMap extends WireData implements Module {
 		$id = $options['id'];
 		$out = '';
 
-		if($n === 1) $out .= "<script type='text/javascript' src='{$this->config->urls->MarkupGoogleMap}MarkupGoogleMap.js'></script>";
+		if($n === 1) $out .= "<script src='{$this->config->urls->MarkupGoogleMap}MarkupGoogleMap.js'></script>";
 
 		$out .= "<div id='$id' class='$options[class]'$style></div>";
 
@@ -208,10 +210,13 @@ class MarkupGoogleMap extends WireData implements Module {
 			if(!$marker->lat) continue; 
 			$url = $options['markerLinkField'] ? $page->get($options['markerLinkField']) : '';
 			$title = $options['markerTitleField'] ? $page->get($options['markerTitleField']) : ''; 
-			$out .= "$id.addMarker($marker->lat, $marker->lng, '$url', '$title', ''); ";
+			$markerPos = $options['markerPosition'] ? $page->get($options['markerPosition']) : ''; 
+			$out .= "$id.addMarker($marker->lat, $marker->lng, '$url', '$title', '', '$marker->address', '$markerPos'); ";
+			//$out .= "$id.addRichMarker($marker->lat, $marker->lng, '$url', '$title', '$marker->address', '$markerPos'); ";
 		}
 
 		if(count($pageArray) > 1 && $options['fitToMarkers']) $out .= "$id.fitToMarkers(); ";
+
 		$out .= "}</script>";
 
 		return $out; 

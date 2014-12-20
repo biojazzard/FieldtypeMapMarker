@@ -247,7 +247,8 @@ function MarkupGoogleMap() {
     });
   };
 
-  this.addMarker = function(lat, lng, url, title, icon) {
+  this.addMarker = function(lat, lng, url, title, icon, body, class_name) {
+
     if(lat === 0.0) return;
 
     var latLng = new google.maps.LatLng(lat, lng); 
@@ -258,32 +259,12 @@ function MarkupGoogleMap() {
       map: this.map,
       linkURL: '',
       zIndex: zIndex
-    }; 
-
-    var markerOptions = {
-      position: latLng, 
-      map: this.map,
-      linkURL: '',
-      zIndex: zIndex
-    }; 
-
-    var richmarkerOptions = {
-      position: latLng, 
-      map: this.map,
-      draggable: true,
-      content: '<div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title">BOXCALF</h3></div><div class="panel-body">Elcano 11, Bilbao</div></div>'
     };
 
     if(icon.length > 0) markerOptions.icon = icon;
       else if(this.icon.length > 0) markerOptions.icon = this.icon;
 
     var marker = new google.maps.Marker(markerOptions);
-
-    var richmarker = new RichMarker(richmarkerOptions);
-
-    this.setMarkerContent(richmarker, richmarkerOptions.content, 'contactHeadline', '.credits');
-
-    richmarker.setMap(this.map);
 
     if(url.length > 0) marker.linkURL = url;
     if(this.hoverBox) marker.hoverBoxTitle = title; 
@@ -331,17 +312,57 @@ function MarkupGoogleMap() {
         $(document).unbind("mousemove", mouseMove);
       });
 
-      google.maps.event.addListener(richmarker, 'position_changed', function() {
-        log('Marker position: ' + marker.getPosition());
-      });
-
-      var count = 1;
-      google.maps.event.addListener(richmarker, 'click', function() {
-        console.log('richmarker clicked: ' + count++);
-      });
-
     }
+
+    this.addRichMarker(lat, lng, url, title, body, class_name);
+
   };
+
+  /* richmarker */
+
+  this.addRichMarker = function(lat, lng, url, title, body, class_name) {
+
+    if(lat === 0.0) return;
+
+    var latLng = new google.maps.LatLng(lat, lng); 
+    var zIndex = 99990 + this.numMarkers;
+
+
+    var panelTitle = title;
+    var panelContent = body;
+
+    var richmarkerOptions = {
+      position: latLng, 
+      map: this.map,
+      draggable: false,
+      anchor: RichMarkerPosition[class_name],
+      shadow: '0 0 0 rgba(0,0,0,0.0)',
+      content: '<div class="panel panel-default"> \
+                  <div class="panel-heading"> \
+                    <h3 class="panel-title">' + panelTitle + '</h3> \
+                  </div><div class="panel-body">' + panelContent + '</div> \
+                </div>'
+    };
+
+    var richmarker = new RichMarker(richmarkerOptions);
+
+    this.setMarkerContent(richmarker, richmarkerOptions.content, 'contactHeadline', '.credits');
+
+    richmarker.setMap(this.map);
+
+    google.maps.event.addListener(richmarker, 'position_changed', function() {
+      log('Marker position: ' + marker.getPosition());
+    });
+
+    var count = 1;
+
+    google.maps.event.addListener(richmarker, 'click', function() {
+      console.log('richmarker clicked: ' + count++);
+    });
+
+  };
+
+  /* richmarker */
 
   this.fitToMarkers = function() {
 
@@ -355,11 +376,11 @@ function MarkupGoogleMap() {
 
     map.fitBounds(bounds);
 
-
     var listener = google.maps.event.addListener(map, "idle", function() { 
-      if(map.getZoom() < 2) map.setZoom(2); 
+      if(map.getZoom() < 3) map.setZoom(3); 
       google.maps.event.removeListener(listener); 
     });
+
   };
 }
 

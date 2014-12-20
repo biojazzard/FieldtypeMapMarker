@@ -5,14 +5,48 @@
 
 // Create an array of styles.
 
-/* SHOWN ON ADMIN */
+/*
+var styles = [
+    {
+      featureType: 'water',
+      elementType: 'all',
+      stylers: [
+        { hue: '#4194d8' },
+        { saturation: 38 },
+        { lightness: -28 },
+        { visibility: 'simplified' }
+      ]
+    },{
+      featureType: 'landscape',
+      elementType: 'all',
+      stylers: [
+        { hue: '#323232' },
+        { saturation: -100 },
+        { lightness: -57 },
+        { visibility: 'simplified' }
+      ]
+    },{
+      featureType: 'road',
+      elementType: 'geometry',
+      stylers: [
+        { hue: '#4194d8' },
+        { saturation: -34 },
+        { lightness: -14 },
+        { visibility: 'on' }
+      ]
+    },{
+      featureType: 'poi',
+      elementType: 'all',
+      stylers: [
+        { hue: '#FFFFFF' },
+        { saturation: -100 },
+        { lightness: 100 },
+        { visibility: 'off' }
+      ]
+    }
+  ];
 
-var mapOptions = {
-	zoom: 11,
-	center: new google.maps.LatLng(50.957433837969454, -114.20762548217772),
-	styles: mapStyle
-};
-
+*/
 var styles = [
     {
         "featureType": "all",
@@ -131,7 +165,7 @@ var styles = [
             }
         ]
     }
-];
+  ];
 
 var InputfieldMapMarker = {
 
@@ -139,10 +173,10 @@ var InputfieldMapMarker = {
 		zoom: 12, // mats, previously 5
 		draggable: true, // +mats
 		center: null,
-		mapTypeId: google.maps.MapTypeId.TERRAIN,
+		mapTypeId: google.maps.MapTypeId.ROADMAP,
 		scrollwheel: false,
 		mapTypeControlOptions: {
-      mapTypeIds: [google.maps.MapTypeId.TERRAIN, google.maps.MapTypeId.ROADMAP, 'map_style']
+      mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']
     },
 		scaleControl: false
 	},	

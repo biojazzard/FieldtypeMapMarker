@@ -48,8 +48,7 @@ function RichMarker(opt_options) {
   }
 
   if (opt_options['shadow'] == undefined) {
-    opt_options['shadow'] = '0 0 0 rgba(88,88,88,0.7)';
-    //opt_options['shadow'] = '7px -3px 5px rgba(88,88,88,0.7)';
+    opt_options['shadow'] = '7px -3px 5px rgba(88,88,88,0.7)';
   }
 
   if (opt_options['anchor'] == undefined) {
