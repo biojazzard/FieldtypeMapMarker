@@ -337,7 +337,7 @@ function MarkupGoogleMap() {
       draggable: false,
       anchor: RichMarkerPosition[class_name],
       shadow: '0 0 0 rgba(0,0,0,0.0)',
-      content: '<div class="panel panel-default"> \
+      content: '<div class="panel panel-primary"> \
                   <div class="panel-heading"> \
                     <h3 class="panel-title">' + panelTitle + '</h3> \
                   </div><div class="panel-body">' + panelContent + '</div> \
