@@ -135,6 +135,7 @@ class MarkupGoogleMap extends WireData implements Module {
 			'icon' => $this->config->urls->MarkupGoogleMap.'/map.svg', // url to icon (blank=use default)
 			'n' => $n, 
 			'markerPosition' => 'class_name',
+			'telephone' => 'telephone',
 			);
 	}
 
@@ -211,8 +212,9 @@ class MarkupGoogleMap extends WireData implements Module {
 			$url = $options['markerLinkField'] ? $page->get($options['markerLinkField']) : '';
 			$title = $options['markerTitleField'] ? $page->get($options['markerTitleField']) : ''; 
 			$markerPos = $options['markerPosition'] ? $page->get($options['markerPosition']) : ''; 
-			$out .= "$id.addMarker($marker->lat, $marker->lng, '$url', '$title', '', '$marker->address', '$markerPos'); ";
-			//$out .= "$id.addRichMarker($marker->lat, $marker->lng, '$url', '$title', '$marker->address', '$markerPos'); ";
+			$telephone = $options['telephone'] ? $page->get($options['telephone']) : ''; 
+			$out .= "$id.addMarker($marker->lat, $marker->lng, '$url', '$title', '', '$marker->address', '$telephone', '$markerPos'); ";
+			//$out .= "$id.addRichMarker($marker->lat, $marker->lng, '$url', '$title', '$marker->address', ,'$markerPos'); ";
 		}
 
 		if(count($pageArray) > 1 && $options['fitToMarkers']) $out .= "$id.fitToMarkers(); ";

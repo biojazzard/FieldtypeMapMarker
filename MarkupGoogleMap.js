@@ -247,7 +247,7 @@ function MarkupGoogleMap() {
     });
   };
 
-  this.addMarker = function(lat, lng, url, title, icon, body, class_name) {
+  this.addMarker = function(lat, lng, url, title, icon, body, tel, class_name) {
 
     if(lat === 0.0) return;
 
@@ -314,22 +314,29 @@ function MarkupGoogleMap() {
 
     }
 
-    this.addRichMarker(lat, lng, url, title, body, class_name);
+    this.addRichMarker(lat, lng, url, title, body, tel, class_name);
 
   };
 
   /* richmarker */
 
-  this.addRichMarker = function(lat, lng, url, title, body, class_name) {
+  this.addRichMarker = function(lat, lng, url, title, body, tel, class_name) {
 
     if(lat === 0.0) return;
 
     var latLng = new google.maps.LatLng(lat, lng); 
     var zIndex = 99990 + this.numMarkers;
 
-
+    //https://www.google.es/maps?f=q&source=embed&hl=es&sll=43.262049,-2.934293&hq=BOXCALF,+Elcano+11,&hnear=Bilbao,+Vizcaya
+    //https://www.google.es/maps?f=q&source=embed&hl=es&geocode&q=BOXCALF,+Elcano+11,+bilbao&sll=43.262049,-2.934293&sspn=0.008524,0.009913&ie=UTF8&hq=BOXCALF,+Elcano+11,&hnear=Bilbao,+Vizcaya,+Pa%C3%ADs+Vasco&t=h&layer=c&cbll=43.262007,-2.934419&panoid=30g6A51Zz7TFxuZEfVomUQ&cbp=13,50.56,,0,7.09&ll=43.258198,-2.932749&spn=0.00972,0.009871&z=15
+    
+    bodyURL = body.replace(" ", "+");
+    
     var panelTitle = title;
-    var panelContent = body;
+    var panelContent = '<p><a href="https://www.google.es/maps?ff=q&source=embed&hl=es&geocode&q=' + panelTitle + '&sll=' + lat + ',' + lng +'&ie=UTF8">' + body + '</a></p>';
+    var panelExtra = '<p><a class="btn btn-primary" href="tel:' + tel + '">' + tel + '</a></p>';
+
+    console.log(latLng);
 
     var richmarkerOptions = {
       position: latLng, 
@@ -340,7 +347,7 @@ function MarkupGoogleMap() {
       content: '<div class="panel panel-primary"> \
                   <div class="panel-heading"> \
                     <h3 class="panel-title">' + panelTitle + '</h3> \
-                  </div><div class="panel-body">' + panelContent + '</div> \
+                  </div><div class="panel-body">' + panelContent + panelExtra + '</div> \
                 </div>'
     };
 
