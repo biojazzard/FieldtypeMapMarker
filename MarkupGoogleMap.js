@@ -27,17 +27,16 @@
  *
  */
 
-document.addEventListener('DOMContentLoaded', function(){
-
-  console.log("Vanila!");
-
-});
 
 /* SHOWN ON FRONTEND */
 
 var MY_MAPTYPE_ID = 'BOXCALF';
 
+google.maps.event.addDomListener(window, 'load', initMarkupGoogleMaps);
+
 function MarkupGoogleMap() {
+
+  console.log("Vanila!");
 
   this.map = null;
   this.markers = [];
@@ -193,7 +192,7 @@ function MarkupGoogleMap() {
 
   this.setJqueryMarkerContent = function(marker, id) {
     var content = document.getElementById('contact-headline');
-    console.log(content);
+    //console.log(content);
     marker.setContent(content);
   }
 
@@ -247,7 +246,7 @@ function MarkupGoogleMap() {
     });
   };
 
-  this.addMarker = function(lat, lng, url, title, icon, body, tel, class_name) {
+  this.addMarker = function(lat, lng, url, title, icon, body, tel, class_name, imgsrc) {
 
     if(lat === 0.0) return;
 
@@ -292,7 +291,7 @@ function MarkupGoogleMap() {
           });
       }; 
 
-      console.log($hoverBox); 
+      //console.log($hoverBox); 
 
       google.maps.event.addListener(marker, 'mouseover', function(e) {
         this._currentURL = url;
@@ -314,13 +313,13 @@ function MarkupGoogleMap() {
 
     }
 
-    this.addRichMarker(lat, lng, url, title, body, tel, class_name);
+    this.addRichMarker(lat, lng, url, title, body, tel, class_name, imgsrc);
 
   };
 
   /* richmarker */
 
-  this.addRichMarker = function(lat, lng, url, title, body, tel, class_name) {
+  this.addRichMarker = function(lat, lng, url, title, body, tel, class_name, imgsrc) {
 
     if(lat === 0.0) return;
 
@@ -329,15 +328,15 @@ function MarkupGoogleMap() {
 
     //https://www.google.es/maps?f=q&source=embed&hl=es&sll=43.262049,-2.934293&hq=BOXCALF,+Elcano+11,&hnear=Bilbao,+Vizcaya
     //https://www.google.es/maps?f=q&source=embed&hl=es&geocode&q=BOXCALF,+Elcano+11,+bilbao&sll=43.262049,-2.934293&sspn=0.008524,0.009913&ie=UTF8&hq=BOXCALF,+Elcano+11,&hnear=Bilbao,+Vizcaya,+Pa%C3%ADs+Vasco&t=h&layer=c&cbll=43.262007,-2.934419&panoid=30g6A51Zz7TFxuZEfVomUQ&cbp=13,50.56,,0,7.09&ll=43.258198,-2.932749&spn=0.00972,0.009871&z=15
-    
-    bodyURL = body.replace(" ", "+");
-    
+        
     var panelTitle = title;
-    var panelContent = '<p><a href="https://www.google.es/maps?ff=q&source=embed&hl=es&geocode&q=' + panelTitle + '&sll=' + lat + ',' + lng +'&ie=UTF8">' + body + '</a></p>';
-    var panelExtra = '<p><a class="btn btn-primary" href="tel:' + tel + '">' + tel + '</a></p>';
 
-    console.log(latLng);
+    var panelBtn = '<a class="btn btn-xs btn-default btn-block btn-abs-top" href="https://www.google.es/maps?ff=q&source=embed&hl=es&geocode&q=' + title + '&sll=' + lat + ',' + lng +'&ie=UTF8">' + body + '</a>';
+    var panelBtnTel = '<a class="btn btn-lg btn-success btn-block btn-abs-bottom" href="tel:' + tel + '"><i class="md md-phone"></i> ' + tel + '</a>';
+  
 
+    var btnGroup = '<div class="btn-group btn-group-justified">' + panelBtn + panelBtnTel + '</div>';  
+    
     var richmarkerOptions = {
       position: latLng, 
       map: this.map,
@@ -345,9 +344,8 @@ function MarkupGoogleMap() {
       anchor: RichMarkerPosition[class_name],
       shadow: '0 0 0 rgba(0,0,0,0.0)',
       content: '<div class="panel panel-primary"> \
-                  <div class="panel-heading"> \
-                    <h3 class="panel-title">' + panelTitle + '</h3> \
-                  </div><div class="panel-body">' + panelContent + panelExtra + '</div> \
+                  <div class="panel-heading"><h3 class="panel-title text-right">' + title + '</h3></div>' + ' \
+                    <div class="panel-body panel-xs" style="background-image:url(' + imgsrc + ');">' + panelBtn + panelBtnTel + '</div> \
                 </div>'
     };
 
@@ -384,7 +382,7 @@ function MarkupGoogleMap() {
     map.fitBounds(bounds);
 
     var listener = google.maps.event.addListener(map, "idle", function() { 
-      if(map.getZoom() < 3) map.setZoom(3); 
+      if(map.getZoom() < 2) map.setZoom(2); 
       google.maps.event.removeListener(listener); 
     });
 
