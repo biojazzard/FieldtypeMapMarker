@@ -1,0 +1,79 @@
+[{
+    "featureType": "all",
+    "elementType": "geometry.fill",
+    "stylers": [{
+        "color": "#cccccc"
+    }, {
+        "weight": 0.1
+    }, {
+        "lightness": 68
+    }]
+}, {
+    "featureType": "poi",
+    "elementType": "all",
+    "stylers": [{
+        "visibility": "simplified"
+    }, {
+        "saturation": -100
+    }, {
+        "lightness": 10
+    }]
+}, {
+    "featureType": "landscape",
+    "elementType": "all",
+    "stylers": [{
+        "visibility": "on"
+    }, {
+        "saturation": -100
+    }, {
+        "lightness": 65
+    }]
+}, {
+    "featureType": "road.highway",
+    "elementType": "all",
+    "stylers": [{
+        "saturation": -100
+    }]
+}, {
+    "featureType": "road.arterial",
+    "elementType": "all",
+    "stylers": [{
+        "visibility": "on"
+    }, {
+        "saturation": -100
+    }, {
+        "lightness": 30
+    }]
+}, {
+    "featureType": "road.local",
+    "elementType": "all",
+    "stylers": [{
+        "visibility": "on"
+    }, {
+        "saturation": -100
+    }, {
+        "lightness": 40
+    }]
+}, {
+    "featureType": "transit",
+    "elementType": "all",
+    "stylers": [{
+        "visibility": "simplified"
+    }, {
+        "saturation": -100
+    }]
+}, {
+    "featureType": "administrative.province",
+    "elementType": "all",
+    "stylers": [{
+        "visibility": "off"
+    }]
+}, {
+    "featureType": "water",
+    "elementType": "geometry",
+    "stylers": [{
+        "saturation": -100
+    }, {
+        "lightness": -25
+    }]
+}]

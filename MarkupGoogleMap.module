@@ -324,7 +324,7 @@ class MarkupGoogleMap extends WireData implements Module {
 
 	*/
 
-	public function renderRichMarkers($primosWireArray, $fieldName, array $options = array(), $pseudoPage) {
+	public function renderRichMarkers($primosWireArray, $fieldName, array $options = array()) {
 
 		function getCustomData($scriptName = 'richmarker', $scriptSuffix = '-compiled', $thisModuleURL) {
 			$out = "<div id='{$scriptName}' class='hidden' style='display:none;' data-script-src='{$thisModuleURL}{$scriptName}{$scriptSuffix}.js'></div>";
@@ -390,11 +390,11 @@ class MarkupGoogleMap extends WireData implements Module {
 			$out .= getCustomData('richmarker', '', $this->config->urls->MarkupGoogleMap);
 		}
 
-		$out .= "<div id='$id' class='$options[class]'$style></div>";
+		$out .= "<div id='$id' class='$options[class]'$style></div>"."\n";
 
-		$out .= "<script>\n";
+		$out .= "<script>"."\n";
 
-		$out .= "initMarkupGoogleMaps = function() { ".
+		$out .= "window.initMarkupGoogleMaps = function() { "."\n".
 			"var $id = new MarkupGoogleMap(); " . 
 			"$id.setOption('zoom', $zoom); " . 
 			"$id.setOption('mapTypeId', google.maps.MapTypeId.$type); " . 
@@ -412,19 +412,19 @@ class MarkupGoogleMap extends WireData implements Module {
 			}
 			*/
 			if($marker->lat) {
-				$out .= "console.log('".$marker->lat."');";
+				$out .= "console.log('".$pageCombo[1]->images->first->url."');"."\n";
 			}
 			$url = $options['markerLinkField'] ? $pageCombo[0]->get('url') : '';
 			$title = $options['markerTitleField'] ? $pageCombo[0]->get('title') : ''; 
 			$markerPos = $options['markerPosition'] ? $pageCombo[0]->get('class_name') : ''; 
 			$telephone = $options['telephone'] ? $pageCombo[0]->get('telephone') : ''; 
 			$imgsrc = $pageCombo[1]->images->first->url;
-			$out .= "$id.addMarker($marker->lat, $marker->lng, '$url', '$title', '', '$marker->address', '$telephone', '$markerPos', '$imgsrc'); ";
+			$out .= "$id.addMarker($marker->lat, $marker->lng, '$url', '$title', '', '$marker->address', '$telephone', '$markerPos', '$imgsrc');"."\n";
 		}
 
-		if(count($primosWireArray) >= 1 && $options['fitToMarkers']) $out .= "$id.fitToMarkers(); ";
+		if(count($primosWireArray) >= 1 && $options['fitToMarkers']) $out .= "$id.fitToMarkers(); "."\n";
 		
-		$out .= "}</script>";
+		$out .= "}"."\n"."</script>"."\n";
 
 		return $out; 
 	}
