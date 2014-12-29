@@ -236,16 +236,20 @@ class MarkupGoogleMap extends WireData implements Module {
 
       foreach ($primosWireArray as $pageCombo) {
         echo '<pre>';
-        print_r($pageCombo[0]->id);
+        print_r($pageCombo->first->id);
         echo '</pre>';
         echo '<pre style="color: red;">';
-        print_r($pageCombo[1]->images->first->url);
+        print_r($pageCombo->last->images->first->url);
         echo '</pre>';
       }
 
 	}
 
-	public function renderRichMarkers($primosWireArray, $fieldName, array $options = array()) {
+	public function renderRichMarkers(WireArray $primosWireArray, $fieldName, array $options = array()) {
+
+		if(!$primosWireArray instanceof WireArray) {
+			die;
+		}
 
 		define("LB", "\n");
 
@@ -259,10 +263,6 @@ class MarkupGoogleMap extends WireData implements Module {
 
 		$defaultOptions = $this->getOptions($fieldName); 
 		$options = array_merge($defaultOptions, $options); 
-		
-		if(!$primosWireArray instanceof WireArray) {
-			die;
-		}
 
 		$height = $options['height']; 
 		$width = $options['width'];
@@ -292,7 +292,7 @@ class MarkupGoogleMap extends WireData implements Module {
 		/* Revisar
 		if($options['useMarkerSettings'] && (count($primosWireArray) == 1 || !$lat)) {
 			// single marker overrides lat, lng and zoom settings
-			$marker = $primosWireArray[0]->get($fieldName);
+			$marker = $primosWireArray->first->get($fieldName);
 			$lat = $marker->lat; 
 			$lng = $marker->lng; 
 			if($marker->zoom > 0) $zoom = (int) $marker->zoom;
@@ -304,7 +304,7 @@ class MarkupGoogleMap extends WireData implements Module {
 		$out = '';
 
 		if($n === 1) {
-			$out .= getCustomData('MarkupGoogleMap', '', $this->config->urls->MarkupGoogleMap);
+			$out .= getCustomData('MarkupGoogleMap', '.min', $this->config->urls->MarkupGoogleMap);
 			$out .= getCustomData('richmarker', '-compiled', $this->config->urls->MarkupGoogleMap);
 		}
 
@@ -314,21 +314,10 @@ class MarkupGoogleMap extends WireData implements Module {
 
 		// Se itera un pageArray y se saca cada Marker -> RichMarker.
 		foreach($primosWireArray as $pageCombo) {
-			$out .= "<div data-page-id=\"{$pageCombo[1]->id}\" data-img-src=\"{$pageCombo[1]->images->first->url}\"></div>".LB;
+			$out .= "<div data-page-id=\"{$pageCombo->last->id}\" data-img-src=\"{$pageCombo->last->images->first->url}\"></div>".LB;
 		}
 
 		$out .= '<script>'."\n";
-
-		// OK Localhost
-		/*
-		$out .= 'window.initMarkupGoogleMaps = function() { '.LB.
-			'var '.$id.' = new MarkupGoogleMap(); '.LB.
-			$id.'.setOption("zoom", '.$zoom.'); '.LB.
-			$id.'.setOption("mapTypeId", google.maps.MapTypeId.'.$type.'); '.LB.
-			($options['icon'] ? $id.'.setIcon("'.$options["icon"].'"); ' : '').LB. 
-			($options['useHoverBox'] ? $id.'.setHoverBox("'.str_replace('\'', '"', $options['hoverBoxMarkup']) . '");' : '').LB.
-			$id.'.init("'.$id.'", '.$lat.', '.$lng.');'.LB; 
-		*/
 
 		if ($options['icon']) {
 			$js_icon = $id.'.setIcon("'.$options["icon"].'"); ';
@@ -354,28 +343,23 @@ EOT;
 
 		// Se itera un pageArray y se saca cada Marker -> RichMarker.
 		foreach($primosWireArray as $pageCombo) {
-			//$out .= "alert('".$pageCombo[0]->get($fieldName)."');";
-			$marker = $pageCombo[0]->get($fieldName);
+			//$out .= "alert('".$pageCombo->first->get($fieldName)."');";
+			$marker = $pageCombo->first->get($fieldName);
 			if(!$marker instanceof MapMarker) {
-				$out .= "console.log({$pageCombo[0]->get($fieldName)});".LB;
+				$out .= "console.log({$pageCombo->first->get($fieldName)});".LB;
 			}
 
+			$url = $options['markerLinkField'] ? $pageCombo->first->get('url') : '';
+			$title = $options['markerTitleField'] ? $pageCombo->first->get('title') : ''; 
+			$markerPos = $options['markerPosition'] ? $pageCombo->first->get('class_name') : ''; 
+			$telephone = $options['telephone'] ? $pageCombo->first->get('telephone') : '';
 
-			$url = $options['markerLinkField'] ? $pageCombo[0]->get('url') : '';
-			$title = $options['markerTitleField'] ? $pageCombo[0]->get('title') : ''; 
-			$markerPos = $options['markerPosition'] ? $pageCombo[0]->get('class_name') : ''; 
-			$telephone = $options['telephone'] ? $pageCombo[0]->get('telephone') : '';
-
-			if(count($pageCombo[1]->images)) {
-				$imgsrc = $pageCombo[1]->images->first->url;
+			if(count($pageCombo->last->images)) {
+				$imgsrc = $pageCombo->last->images->first->url;
 				$out .= "console.log('{$imgsrc}');".LB;
 			}
 
-			$imgid = $pageCombo[1]->id;
-
-
-			//OK LOCALHOST
-			//$out .= $id.'.addMarker('.$marker->lat.', '.$marker->lng.', "'.$url.'", "'.$title.'", "", "'.$marker->address.'", "'.$telephone.'", "'.$markerPos.'", "'.$imgsrc.'");'.LB;
+			$imgid = $pageCombo->last->id;
 
 			$out .= "{$id}.addMarker({$marker->lat}, {$marker->lng}, '{$url}', '{$title}', '', '{$marker->address}', '{$telephone}', '{$markerPos}', '{$imgsrc}', {$imgid});".LB;
 

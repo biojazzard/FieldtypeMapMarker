@@ -35,7 +35,7 @@ MarkupGoogleMap = void 0;
   var MY_MAPTYPE_ID;
   MY_MAPTYPE_ID = "BOXCALF";
   google.maps.event.addDomListener(window, "load", initMarkupGoogleMaps);
-  MarkupGoogleMap = function() {
+  return MarkupGoogleMap = function() {
     this.map = null;
     this.markers = [];
     this.numMarkers = 0;
@@ -289,8 +289,8 @@ MarkupGoogleMap = void 0;
       latLng = new google.maps.LatLng(lat, lng);
       zIndex = 99990 + this.numMarkers;
       panelTitle = title;
-      panelBtn = "<a class=\"btn btn-xs btn-default btn-block btn-abs-top\" href=\"https://www.google.es/maps?ff=q&source=embed&hl=es&geocode&q=" + title + "&sll=" + lat + "," + lng + "&ie=UTF8\">" + body + "</a>";
-      panelBtnTel = "<a class=\"btn btn-lg btn-success btn-block btn-abs-bottom\" href=\"tel:" + tel + "\"><i class=\"md md-phone\"></i> " + tel + "</a>";
+      panelBtn = "<a class=\"btn btn-xs btn-primary btn-block btn-abs\" href=\"https://www.google.es/maps?ff=q&source=embed&hl=es&geocode&q=" + title + "&sll=" + lat + "," + lng + "&ie=UTF8\"><i class=\"md md-map\"></i> " + body + "</a>";
+      panelBtnTel = "<a class=\"btn btn-lg btn-success btn-block btn-abs\" href=\"tel:" + tel + "\"><i class=\"md md-phone\"></i> " + tel + "</a>";
       btnGroup = "<div class=\"btn-group btn-group-justified\">" + panelBtn + panelBtnTel + "</div>";
       richmarkerOptions = {
         position: latLng,
@@ -298,7 +298,7 @@ MarkupGoogleMap = void 0;
         draggable: false,
         anchor: RichMarkerPosition[class_name],
         shadow: '0 0 0 rgba(0,0,0,0.0)',
-        content: '<div class="panel panel-primary"><div class="panel-heading"><h3 class="panel-title text-right">' + title + '</h3></div>' + '<div id="img-id-' + imgid + '" class="panel-body panel-xs" style="background-image:url(' + imgsrc + ');">' + panelBtn + panelBtnTel + '</div></div>'
+        content: '<div class="panel"><div class="panel-heading"><h3 class="panel-title text-right">' + title + '</h3></div>' + '<div id="img-id-' + imgid + '" class="panel-body panel-xs" style="background-image:url(\'' + imgsrc + '\');">' + panelBtn + panelBtnTel + '</div></div>'
       };
       richmarker = new RichMarker(richmarkerOptions);
       this.setMarkerContent(richmarker, richmarkerOptions.content, "contactHeadline", ".credits");
