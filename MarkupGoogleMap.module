@@ -324,6 +324,19 @@ class MarkupGoogleMap extends WireData implements Module {
 
 	*/
 
+	public function testPrimos($primosWireArray) {
+
+      foreach ($primosWireArray as $pageCombo) {
+        echo '<pre>';
+        print_r($pageCombo[0]->id);
+        echo '</pre>';
+        echo '<pre style="color: red;">';
+        print_r($pageCombo[1]->images->first->url);
+        echo '</pre>';
+      }
+
+	}
+
 	public function renderRichMarkers($primosWireArray, $fieldName, array $options = array()) {
 
 		function getCustomData($scriptName = 'richmarker', $scriptSuffix = '-compiled', $thisModuleURL) {
@@ -337,13 +350,9 @@ class MarkupGoogleMap extends WireData implements Module {
 		$defaultOptions = $this->getOptions($fieldName); 
 		$options = array_merge($defaultOptions, $options); 
 		
-		/*
-		if($pageArray instanceof Page) {
-			$page = $pageArray; 
-			$pageArray = new PageArray();
-			$pageArray->add($page); 
+		if(!$primosWireArray instanceof WireArray) {
+			die;
 		}
-		*/
 
 		$height = $options['height']; 
 		$width = $options['width'];
@@ -390,17 +399,17 @@ class MarkupGoogleMap extends WireData implements Module {
 			$out .= getCustomData('richmarker', '', $this->config->urls->MarkupGoogleMap);
 		}
 
-		$out .= "<div id='$id' class='$options[class]'$style></div>"."\n";
+		$out .= '<div id="'.$id.'" class="'.$options['class'].$style.'"></div>'."\n";
 
-		$out .= "<script>"."\n";
+		$out .= '<script>'."\n";
 
-		$out .= "window.initMarkupGoogleMaps = function() { "."\n".
-			"var $id = new MarkupGoogleMap(); " . 
-			"$id.setOption('zoom', $zoom); " . 
-			"$id.setOption('mapTypeId', google.maps.MapTypeId.$type); " . 
-			($options['icon'] ? "$id.setIcon('$options[icon]'); " : "") . 
-			($options['useHoverBox'] ? "$id.setHoverBox('" . str_replace("'", '"', $options['hoverBoxMarkup']) . "');" : "") . 
-			"$id.init('$id', $lat, $lng); "; 
+		$out .= 'window.initMarkupGoogleMaps = function() { '."\n".
+			'var '.$id.' = new MarkupGoogleMap(); ' . 
+			$id.'.setOption("zoom", '.$zoom.'); ' . 
+			$id.'.setOption("mapTypeId", google.maps.MapTypeId.'.$type.'); ' . 
+			($options['icon'] ? $id.'.setIcon("'.$options["icon"].'"); ' : '') . 
+			($options['useHoverBox'] ? $id.'.setHoverBox("'.str_replace('\'', '"', $options['hoverBoxMarkup']) . '");' : '') . 
+			$id.'.init("'.$id.'", '.$lat.', '.$lng.'); '; 
 
 		// Se itera un pageArray y se saca cada Marker -> RichMarker.
 		foreach($primosWireArray as $pageCombo) {
@@ -412,19 +421,21 @@ class MarkupGoogleMap extends WireData implements Module {
 			}
 			*/
 			if($marker->lat) {
-				$out .= "console.log('".$pageCombo[1]->images->first->url."');"."\n";
+				$out .= 'console.log("'.$pageCombo[1]->images->first->url.'");'."\n";
 			}
+
 			$url = $options['markerLinkField'] ? $pageCombo[0]->get('url') : '';
 			$title = $options['markerTitleField'] ? $pageCombo[0]->get('title') : ''; 
 			$markerPos = $options['markerPosition'] ? $pageCombo[0]->get('class_name') : ''; 
-			$telephone = $options['telephone'] ? $pageCombo[0]->get('telephone') : ''; 
+			$telephone = $options['telephone'] ? $pageCombo[0]->get('telephone') : '';
 			$imgsrc = $pageCombo[1]->images->first->url;
-			$out .= "$id.addMarker($marker->lat, $marker->lng, '$url', '$title', '', '$marker->address', '$telephone', '$markerPos', '$imgsrc');"."\n";
+
+			$out .= $id.'.addMarker('.$marker->lat.', '.$marker->lng.', "'.$url.'", "'.$title.'", "", "'.$marker->address.'", "'.$telephone.'", "'.$markerPos.'", "'.$imgsrc.'");';
 		}
 
-		if(count($primosWireArray) >= 1 && $options['fitToMarkers']) $out .= "$id.fitToMarkers(); "."\n";
+		if(count($primosWireArray) >= 1 && $options['fitToMarkers']) $out .= $id.'.fitToMarkers(); '."\n";
 		
-		$out .= "}"."\n"."</script>"."\n";
+		$out .= '}'."\n".'</script>'."\n";
 
 		return $out; 
 	}
