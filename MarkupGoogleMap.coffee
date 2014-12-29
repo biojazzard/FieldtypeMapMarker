@@ -32,7 +32,9 @@ MarkupGoogleMap = undefined
   
   #"use strict";
   MY_MAPTYPE_ID = "BOXCALF"
+
   google.maps.event.addDomListener window, "load", initMarkupGoogleMaps
+
   MarkupGoogleMap = ->
     @map = null
     @markers = []
@@ -54,17 +56,16 @@ MarkupGoogleMap = undefined
       scaleControl: false
 
     
-    # coffee
-    #
-    #    mapResponse = []
-    #    $.getJSON "http://localhost/dropbox/boxcalf.es/site/modules/FieldtypeMapMarker/mapStyle.json", (data) ->
-    #      mapResponse = JSON.stringify(data)
-    #      console.log mapResponse
-    #      return
-    #
-    #    @styles = mapResponse
-    #
-    #    
+    ###
+        mapResponse = []
+        $.getJSON "http://localhost/dropbox/boxcalf.es/site/modules/FieldtypeMapMarker/mapStyle.json", (data) ->
+          mapResponse = JSON.stringify(data)
+          console.log mapResponse
+          return
+        @styles = mapResponse
+    ###
+        
+
     @styles = [
       {
         featureType: "all"
@@ -243,7 +244,7 @@ MarkupGoogleMap = undefined
 
       return
 
-    @addMarker = (lat, lng, url, title, icon, body, tel, class_name, imgsrc) ->
+    @addMarker = (lat, lng, url, title, icon, body, tel, class_name, imgsrc, imgid) ->
       return  if lat is 0.0
       latLng = new google.maps.LatLng(lat, lng)
       zIndex = 99990 + @numMarkers
@@ -292,7 +293,7 @@ MarkupGoogleMap = undefined
           $(document).unbind "mousemove", mouseMove
           return
 
-      @addRichMarker lat, lng, url, title, body, tel, class_name, imgsrc
+      @addRichMarker lat, lng, url, title, body, tel, class_name, imgsrc, imgid
 
       return
 
@@ -300,7 +301,7 @@ MarkupGoogleMap = undefined
     # richmarker
     ###
 
-    @addRichMarker = (lat, lng, url, title, body, tel, class_name, imgsrc) ->
+    @addRichMarker = (lat, lng, url, title, body, tel, class_name, imgsrc, imgid) ->
       return  if lat is 0.0
       latLng = new google.maps.LatLng(lat, lng)
       zIndex = 99990 + @numMarkers
@@ -316,11 +317,11 @@ MarkupGoogleMap = undefined
         map: @map
         draggable: false
         anchor: RichMarkerPosition[class_name]
-        shadow: "0 0 0 rgba(0,0,0,0.0)"
-        content: "<div class=\"panel panel-primary\">\
-          <div class=\"panel-heading\"><h3 class=\"panel-title text-right\">" + title + "</h3></div>" + "\
-            <div class=\"panel-body panel-xs\" style=\"background-image:url(" + imgsrc + ");\">" + panelBtn + panelBtnTel + "</div>\
-          </div>"
+        shadow: '0 0 0 rgba(0,0,0,0.0)'
+        content: '<div class="panel panel-primary">\
+          <div class="panel-heading"><h3 class="panel-title text-right">' + title + '</h3></div>' + '\
+            <div id="img-id-' + imgid + '" class="panel-body panel-xs" style="background-image:url(' + imgsrc + ');">' + panelBtn + panelBtnTel + '</div>\
+          </div>'
 
       richmarker = new RichMarker(richmarkerOptions)
       @setMarkerContent richmarker, richmarkerOptions.content, "contactHeadline", ".credits"
@@ -358,5 +359,7 @@ MarkupGoogleMap = undefined
       return
 
     return
+
+  return
 
 ) window.jQuery

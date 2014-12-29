@@ -35,7 +35,7 @@ MarkupGoogleMap = void 0;
   var MY_MAPTYPE_ID;
   MY_MAPTYPE_ID = "BOXCALF";
   google.maps.event.addDomListener(window, "load", initMarkupGoogleMaps);
-  return MarkupGoogleMap = function() {
+  MarkupGoogleMap = function() {
     this.map = null;
     this.markers = [];
     this.numMarkers = 0;
@@ -52,6 +52,15 @@ MarkupGoogleMap = void 0;
       mapTypeId: MY_MAPTYPE_ID,
       scaleControl: false
     };
+
+    /*
+        mapResponse = []
+        $.getJSON "http://localhost/dropbox/boxcalf.es/site/modules/FieldtypeMapMarker/mapStyle.json", (data) ->
+          mapResponse = JSON.stringify(data)
+          console.log mapResponse
+          return
+        @styles = mapResponse
+     */
     this.styles = [
       {
         featureType: "all",
@@ -209,7 +218,7 @@ MarkupGoogleMap = void 0;
         }
       });
     };
-    this.addMarker = function(lat, lng, url, title, icon, body, tel, class_name, imgsrc) {
+    this.addMarker = function(lat, lng, url, title, icon, body, tel, class_name, imgsrc, imgid) {
       var $hoverBox, latLng, marker, markerOptions, mouseMove, offsetLeft, offsetTop, zIndex;
       if (lat === 0.0) {
         return;
@@ -266,13 +275,13 @@ MarkupGoogleMap = void 0;
           $(document).unbind("mousemove", mouseMove);
         });
       }
-      this.addRichMarker(lat, lng, url, title, body, tel, class_name, imgsrc);
+      this.addRichMarker(lat, lng, url, title, body, tel, class_name, imgsrc, imgid);
     };
 
     /*
      * richmarker
      */
-    this.addRichMarker = function(lat, lng, url, title, body, tel, class_name, imgsrc) {
+    this.addRichMarker = function(lat, lng, url, title, body, tel, class_name, imgsrc, imgid) {
       var btnGroup, count, latLng, panelBtn, panelBtnTel, panelTitle, richmarker, richmarkerOptions, zIndex;
       if (lat === 0.0) {
         return;
@@ -288,8 +297,8 @@ MarkupGoogleMap = void 0;
         map: this.map,
         draggable: false,
         anchor: RichMarkerPosition[class_name],
-        shadow: "0 0 0 rgba(0,0,0,0.0)",
-        content: "<div class=\"panel panel-primary\"><div class=\"panel-heading\"><h3 class=\"panel-title text-right\">" + title + "</h3></div>" + "<div class=\"panel-body panel-xs\" style=\"background-image:url(" + imgsrc + ");\">" + panelBtn + panelBtnTel + "</div></div>"
+        shadow: '0 0 0 rgba(0,0,0,0.0)',
+        content: '<div class="panel panel-primary"><div class="panel-heading"><h3 class="panel-title text-right">' + title + '</h3></div>' + '<div id="img-id-' + imgid + '" class="panel-body panel-xs" style="background-image:url(' + imgsrc + ');">' + panelBtn + panelBtnTel + '</div></div>'
       };
       richmarker = new RichMarker(richmarkerOptions);
       this.setMarkerContent(richmarker, richmarkerOptions.content, "contactHeadline", ".credits");

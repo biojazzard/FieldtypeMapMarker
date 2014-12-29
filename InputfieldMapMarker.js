@@ -5,48 +5,6 @@
 
 // Create an array of styles.
 
-/*
-var styles = [
-    {
-      featureType: 'water',
-      elementType: 'all',
-      stylers: [
-        { hue: '#4194d8' },
-        { saturation: 38 },
-        { lightness: -28 },
-        { visibility: 'simplified' }
-      ]
-    },{
-      featureType: 'landscape',
-      elementType: 'all',
-      stylers: [
-        { hue: '#323232' },
-        { saturation: -100 },
-        { lightness: -57 },
-        { visibility: 'simplified' }
-      ]
-    },{
-      featureType: 'road',
-      elementType: 'geometry',
-      stylers: [
-        { hue: '#4194d8' },
-        { saturation: -34 },
-        { lightness: -14 },
-        { visibility: 'on' }
-      ]
-    },{
-      featureType: 'poi',
-      elementType: 'all',
-      stylers: [
-        { hue: '#FFFFFF' },
-        { saturation: -100 },
-        { lightness: 100 },
-        { visibility: 'off' }
-      ]
-    }
-  ];
-
-*/
 var styles = [
     {
         "featureType": "all",
