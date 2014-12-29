@@ -339,6 +339,8 @@ class MarkupGoogleMap extends WireData implements Module {
 
 	public function renderRichMarkers($primosWireArray, $fieldName, array $options = array()) {
 
+		define("LB", "\n");
+
 		function getCustomData($scriptName = 'richmarker', $scriptSuffix = '-compiled', $thisModuleURL) {
 			$out = "<div id='{$scriptName}' class='hidden' style='display:none;' data-script-src='{$thisModuleURL}{$scriptName}{$scriptSuffix}.js'></div>";
 			return $out;
@@ -379,7 +381,7 @@ class MarkupGoogleMap extends WireData implements Module {
 		$zoom = $options['zoom'] > 0 ? (int) $options['zoom'] : $defaultOptions['zoom'];
 		$type = in_array($options['type'], array('ROADMAP', 'SATELLITE', 'HYBRID')) ? $options['type'] : 'HYBRID';
 
-		/*
+		/* Revisar
 		if($options['useMarkerSettings'] && (count($primosWireArray) == 1 || !$lat)) {
 			// single marker overrides lat, lng and zoom settings
 			$marker = $primosWireArray[0]->get($fieldName);
@@ -390,52 +392,80 @@ class MarkupGoogleMap extends WireData implements Module {
 		*/
 
 		$id = $options['id'];
-		$out = '';
 
-		//if($n === 1) $out .= "<script src='{$this->config->urls->MarkupGoogleMap}MarkupGoogleMap.js'></script>";
+		$out = '';
 
 		if($n === 1) {
 			$out .= getCustomData('MarkupGoogleMap', '', $this->config->urls->MarkupGoogleMap);
 			$out .= getCustomData('richmarker', '', $this->config->urls->MarkupGoogleMap);
 		}
 
-		$out .= '<div id="'.$id.'" class="'.$options['class'].$style.'"></div>'."\n";
+		$out .= '<div id="'.$id.'" class="'.$options['class'].$style.'"></div>'.LB;
 
 		$out .= '<script>'."\n";
 
-		$out .= 'window.initMarkupGoogleMaps = function() { '."\n".
-			'var '.$id.' = new MarkupGoogleMap(); ' . 
-			$id.'.setOption("zoom", '.$zoom.'); ' . 
-			$id.'.setOption("mapTypeId", google.maps.MapTypeId.'.$type.'); ' . 
-			($options['icon'] ? $id.'.setIcon("'.$options["icon"].'"); ' : '') . 
-			($options['useHoverBox'] ? $id.'.setHoverBox("'.str_replace('\'', '"', $options['hoverBoxMarkup']) . '");' : '') . 
-			$id.'.init("'.$id.'", '.$lat.', '.$lng.'); '; 
+		// OK Localhost
+		/*
+		$out .= 'window.initMarkupGoogleMaps = function() { '.LB.
+			'var '.$id.' = new MarkupGoogleMap(); '.LB.
+			$id.'.setOption("zoom", '.$zoom.'); '.LB.
+			$id.'.setOption("mapTypeId", google.maps.MapTypeId.'.$type.'); '.LB.
+			($options['icon'] ? $id.'.setIcon("'.$options["icon"].'"); ' : '').LB. 
+			($options['useHoverBox'] ? $id.'.setHoverBox("'.str_replace('\'', '"', $options['hoverBoxMarkup']) . '");' : '').LB.
+			$id.'.init("'.$id.'", '.$lat.', '.$lng.');'.LB; 
+		*/
+
+		if ($options['icon']) {
+			$js_icon = $id.'.setIcon("'.$options["icon"].'"); ';
+		} else {
+			$js_icon = '';
+		}
+
+		if ($options['useHoverBox']) {
+			$js_hover = $id.'.setHoverBox("'.str_replace('\'', '"', $options['hoverBoxMarkup']) . '");';
+		} else {
+			$js_hover = '';
+		}
+
+		$out .= <<<EOT
+window.initMarkupGoogleMaps = function() { 
+var {$id} = new MarkupGoogleMap();
+{$id}.setOption("zoom", {$zoom});
+{$id}.setOption("mapTypeId", google.maps.MapTypeId.{$type});
+{$js_icon};
+{$js_hover};
+{$id}.init("{$id}", {$lat}, {$lng});
+EOT;
 
 		// Se itera un pageArray y se saca cada Marker -> RichMarker.
 		foreach($primosWireArray as $pageCombo) {
 			//$out .= "alert('".$pageCombo[0]->get($fieldName)."');";
 			$marker = $pageCombo[0]->get($fieldName);
-			/*
 			if(!$marker instanceof MapMarker) {
-				$out .= "console.log('".$pageCombo[0]->get($fieldName)."');";
+				$out .= "console.log({$pageCombo[0]->get($fieldName)});".LB;
 			}
-			*/
-			if($marker->lat) {
-				$out .= 'console.log("'.$pageCombo[1]->images->first->url.'");'."\n";
-			}
+
 
 			$url = $options['markerLinkField'] ? $pageCombo[0]->get('url') : '';
 			$title = $options['markerTitleField'] ? $pageCombo[0]->get('title') : ''; 
 			$markerPos = $options['markerPosition'] ? $pageCombo[0]->get('class_name') : ''; 
 			$telephone = $options['telephone'] ? $pageCombo[0]->get('telephone') : '';
-			$imgsrc = $pageCombo[1]->images->first->url;
 
-			$out .= $id.'.addMarker('.$marker->lat.', '.$marker->lng.', "'.$url.'", "'.$title.'", "", "'.$marker->address.'", "'.$telephone.'", "'.$markerPos.'", "'.$imgsrc.'");';
+			if(count($pageCombo[1]->images)) {
+				$imgsrc = $pageCombo[1]->images->first->url;
+				$out .= "console.log('{$imgsrc}');".LB;
+			}
+
+			//OK LOCALHOST
+			//$out .= $id.'.addMarker('.$marker->lat.', '.$marker->lng.', "'.$url.'", "'.$title.'", "", "'.$marker->address.'", "'.$telephone.'", "'.$markerPos.'", "'.$imgsrc.'");'.LB;
+
+			$out .= "{$id}.addMarker({$marker->lat}, {$marker->lng}, '{$url}', '{$title}', '', '{$marker->address}', '{$telephone}', '{$markerPos}', '{$imgsrc}');".LB;
+
 		}
 
-		if(count($primosWireArray) >= 1 && $options['fitToMarkers']) $out .= $id.'.fitToMarkers(); '."\n";
+		if(count($primosWireArray) >= 1 && $options['fitToMarkers']) $out .= $id.'.fitToMarkers(); '.LB;
 		
-		$out .= '}'."\n".'</script>'."\n";
+		$out .= '}'."\n".'</script>'.LB;
 
 		return $out; 
 	}
