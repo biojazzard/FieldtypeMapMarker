@@ -289,8 +289,8 @@ MarkupGoogleMap = void 0;
       latLng = new google.maps.LatLng(lat, lng);
       zIndex = 99990 + this.numMarkers;
       panelTitle = title;
-      panelBtn = "<a class=\"btn btn-flat\" href=\"https://www.google.es/maps?ff=q&source=embed&hl=es&geocode&q=" + title + "&sll=" + lat + "," + lng + "&ie=UTF8\"><i class=\"md md-map\"></i> " + body + "</a>";
-      panelBtnTel = "<a class=\"btn btn-flat\" href=\"tel:" + tel + "\"><i class=\"md md-phone\"></i> " + tel + "</a>";
+      panelBtn = "<a class=\"btn btn-flat\" href=\"https://www.google.es/maps?ff=q&source=embed&hl=es&geocode&q=" + title + "&sll=" + lat + "," + lng + "&ie=UTF8\">" + body + "</a>";
+      panelBtnTel = "<a class=\"btn btn-flat\" href=\"tel:" + tel + "\">" + tel + "</a>";
       btnGroup = "<div class=\"btn-group btn-group-justified\">" + panelBtn + panelBtnTel + "</div>";
       richmarkerOptions = {
         position: latLng,

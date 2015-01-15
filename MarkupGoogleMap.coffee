@@ -312,8 +312,8 @@ MarkupGoogleMap = undefined
       #https://www.google.es/maps?f=q&source=embed&hl=es&sll=43.262049,-2.934293&hq=BOXCALF,+Elcano+11,&hnear=Bilbao,+Vizcaya
       #https://www.google.es/maps?f=q&source=embed&hl=es&geocode&q=BOXCALF,+Elcano+11,+bilbao&sll=43.262049,-2.934293&sspn=0.008524,0.009913&ie=UTF8&hq=BOXCALF,+Elcano+11,&hnear=Bilbao,+Vizcaya,+Pa%C3%ADs+Vasco&t=h&layer=c&cbll=43.262007,-2.934419&panoid=30g6A51Zz7TFxuZEfVomUQ&cbp=13,50.56,,0,7.09&ll=43.258198,-2.932749&spn=0.00972,0.009871&z=15
       panelTitle = title
-      panelBtn = "<a class=\"btn btn-flat\" href=\"https://www.google.es/maps?ff=q&source=embed&hl=es&geocode&q=" + title + "&sll=" + lat + "," + lng + "&ie=UTF8\"><i class=\"md md-map\"></i> " + body + "</a>"
-      panelBtnTel = "<a class=\"btn btn-flat\" href=\"tel:" + tel + "\"><i class=\"md md-phone\"></i> " + tel + "</a>"
+      panelBtn = "<a class=\"btn btn-flat\" href=\"https://www.google.es/maps?ff=q&source=embed&hl=es&geocode&q=" + title + "&sll=" + lat + "," + lng + "&ie=UTF8\">" + body + "</a>"
+      panelBtnTel = "<a class=\"btn btn-flat\" href=\"tel:" + tel + "\">" + tel + "</a>"
       btnGroup = "<div class=\"btn-group btn-group-justified\">" + panelBtn + panelBtnTel + "</div>"
       richmarkerOptions =
         position: latLng
