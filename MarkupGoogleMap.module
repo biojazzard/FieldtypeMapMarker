@@ -339,6 +339,7 @@ var {$id} = new MarkupGoogleMap();
 {$js_icon};
 {$js_hover};
 {$id}.init("{$id}", {$lat}, {$lng});
+window.setTimeout(function(){ {$id}.specialStyles(); }, 666);
 EOT;
 
 		// Se itera un pageArray y se saca cada Marker -> RichMarker.

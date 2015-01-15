@@ -289,8 +289,8 @@ MarkupGoogleMap = void 0;
       latLng = new google.maps.LatLng(lat, lng);
       zIndex = 99990 + this.numMarkers;
       panelTitle = title;
-      panelBtn = "<a class=\"btn btn-xs btn-primary btn-block btn-abs\" href=\"https://www.google.es/maps?ff=q&source=embed&hl=es&geocode&q=" + title + "&sll=" + lat + "," + lng + "&ie=UTF8\"><i class=\"md md-map\"></i> " + body + "</a>";
-      panelBtnTel = "<a class=\"btn btn-lg btn-success btn-block btn-abs\" href=\"tel:" + tel + "\"><i class=\"md md-phone\"></i> " + tel + "</a>";
+      panelBtn = "<a class=\"btn btn-flat\" href=\"https://www.google.es/maps?ff=q&source=embed&hl=es&geocode&q=" + title + "&sll=" + lat + "," + lng + "&ie=UTF8\"><i class=\"md md-map\"></i> " + body + "</a>";
+      panelBtnTel = "<a class=\"btn btn-flat\" href=\"tel:" + tel + "\"><i class=\"md md-phone\"></i> " + tel + "</a>";
       btnGroup = "<div class=\"btn-group btn-group-justified\">" + panelBtn + panelBtnTel + "</div>";
       richmarkerOptions = {
         position: latLng,
@@ -298,7 +298,7 @@ MarkupGoogleMap = void 0;
         draggable: false,
         anchor: RichMarkerPosition[class_name],
         shadow: '0 0 0 rgba(0,0,0,0.0)',
-        content: '<div class="panel"><div class="panel-heading"><h3 class="panel-title text-right">' + title + '</h3></div>' + '<div id="img-id-' + imgid + '" class="panel-body panel-xs" style="background-image:url(\'' + imgsrc + '\');">' + panelBtn + panelBtnTel + '</div></div>'
+        content: '<div class="panel"><div class="panel-heading"><h3 class="panel-title">' + title + '</h3></div>' + '<div class="panel-body panel-xs">' + panelBtn + '<br>' + panelBtnTel + '</div></div>'
       };
       richmarker = new RichMarker(richmarkerOptions);
       this.setMarkerContent(richmarker, richmarkerOptions.content, "contactHeadline", ".credits");
@@ -315,6 +315,22 @@ MarkupGoogleMap = void 0;
     /*
      * fitToMarkers
      */
+    this.specialStyles = function() {
+      console.log('@specialStyles');
+      return $('.panel-heading').find('h3').each(function() {
+        var index, word;
+        word = $(this).html().trim();
+        index = word.indexOf(' ');
+        if (index === -1) {
+          index = word.length;
+        }
+        if (word.substring(0, index) === 'Boxcalf') {
+          return $(this).html('<span class="first-word boxcalf">' + '&nbsp;' + '</span>' + word.substring(index, word.length));
+        } else {
+          return $(this).html('<span class="first-word kalam">' + word.substring(0, index) + '</span>' + word.substring(index, word.length));
+        }
+      });
+    };
     this.fitToMarkers = function() {
       var bounds, i, latLng, listener, map;
       bounds = new google.maps.LatLngBounds();
@@ -327,8 +343,8 @@ MarkupGoogleMap = void 0;
       }
       map.fitBounds(bounds);
       listener = google.maps.event.addListener(map, "idle", function() {
-        if (map.getZoom() < 2) {
-          map.setZoom(2);
+        if (map.getZoom() >= 20) {
+          map.setZoom(17);
         }
         google.maps.event.removeListener(listener);
       });
