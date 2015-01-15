@@ -145,92 +145,13 @@ class MarkupGoogleMap extends WireData implements Module {
 
 	/* Mod. biojazzard 12.2014 */
 
-	public function getCustomScript($scriptName = 'richmarker', $scriptSuffix = '-compiled') {
+	public function getCustomScript($scriptName = 'richmarker', $scriptSuffix = '.min') {
 		return "<script src='{$this->config->urls->MarkupGoogleMap}{$scriptName}{$scriptSuffix}.js'></script>";
 	}
 
 	public function getCoffeeScript() {
 		return "<script src='//cdnjs.cloudflare.com/ajax/libs/coffee-script/1.6.3/coffee-script.min.js'></script>";
 	}
-
-	/*
-
-	public function render($pageArray, $fieldName, array $options = array()) {
-
-		static $n = 0; 
-		$n++;
-
-		$defaultOptions = $this->getOptions($fieldName); 
-		$options = array_merge($defaultOptions, $options); 
-		
-		if($pageArray instanceof Page) {
-			$page = $pageArray; 
-			$pageArray = new PageArray();
-			$pageArray->add($page); 
-		}
-
-		$height = $options['height']; 
-		$width = $options['width'];
-		if(empty($height)) $height = 300; 
-		if(ctype_digit("$height")) $height .= "px";
-		if(ctype_digit("$width")) $width .= "px";
-
-		$style = '';	
-		if($options['useStyles'] && !empty($height) && !empty($width)) {
-			$style = " style='width: $width; height: $height;'"; 
-		}	
-
-		$lat = $options['lat'];
-		$lng = $options['lng'];
-		$zoom = $options['zoom'] > 0 ? (int) $options['zoom'] : $defaultOptions['zoom'];
-		$type = in_array($options['type'], array('ROADMAP', 'SATELLITE', 'HYBRID')) ? $options['type'] : 'HYBRID';
-
-		if($options['useMarkerSettings'] && (count($pageArray) == 1 || !$lat)) {
-			// single marker overrides lat, lng and zoom settings
-			$marker = $pageArray->first()->get($fieldName); 
-			$lat = $marker->lat; 
-			$lng = $marker->lng; 
-			if($marker->zoom > 0) $zoom = (int) $marker->zoom;
-		}
-
-		$id = $options['id'];
-		$out = '';
-
-		if($n === 1) $out .= "<script src='{$this->config->urls->MarkupGoogleMap}MarkupGoogleMap.js'></script>";
-
-		$out .= "<div id='$id' class='$options[class]'$style></div>";
-
-		$out .= "<script type='text/javascript'>" .
-			"if(typeof google === 'undefined' || typeof google.maps === 'undefined') { " . 
-			"alert('MarkupGoogleMap Error: Please add the maps.googleapis.com script in your document head.'); " . 
-			"} else { " . 
-			"var $id = new MarkupGoogleMap(); " . 
-			"$id.setOption('zoom', $zoom); " . 
-			"$id.setOption('mapTypeId', google.maps.MapTypeId.$type); " . 
-			($options['icon'] ? "$id.setIcon('$options[icon]'); " : "") . 
-			($options['useHoverBox'] ? "$id.setHoverBox('" . str_replace("'", '"', $options['hoverBoxMarkup']) . "');" : "") . 
-			"$id.init('$id', $lat, $lng); "; 
-
-		// Se itera un pageArray y se saca cada Marker -> RichMarker.
-		foreach($pageArray as $page) {
-			$marker = $page->get($fieldName); 
-			if(!$marker instanceof MapMarker) continue; 
-			if(!$marker->lat) continue; 
-			$url = $options['markerLinkField'] ? $page->get($options['markerLinkField']) : '';
-			$title = $options['markerTitleField'] ? $page->get($options['markerTitleField']) : ''; 
-			$markerPos = $options['markerPosition'] ? $page->get($options['markerPosition']) : ''; 
-			$telephone = $options['telephone'] ? $page->get($options['telephone']) : ''; 
-			$out .= "$id.addMarker($marker->lat, $marker->lng, '$url', '$title', '', '$marker->address', '$telephone', '$markerPos'); ";
-		}
-
-		if(count($pageArray) > 1 && $options['fitToMarkers']) $out .= "$id.fitToMarkers(); ";
-
-		$out .= "}</script>";
-
-		return $out; 
-	}
-	
-	*/
 
 	public function testPrimos($primosWireArray) {
 
@@ -253,7 +174,7 @@ class MarkupGoogleMap extends WireData implements Module {
 
 		define("LB", "\n");
 
-		function getCustomData($scriptName = 'richmarker', $scriptSuffix = '-compiled', $thisModuleURL) {
+		function getCustomData($scriptName = 'richmarker', $scriptSuffix = '.min', $thisModuleURL) {
 			$out = "<div id='{$scriptName}' class='hidden' style='display:none;' data-script-src='{$thisModuleURL}{$scriptName}{$scriptSuffix}.js'></div>";
 			return $out;
 		}
@@ -305,7 +226,7 @@ class MarkupGoogleMap extends WireData implements Module {
 
 		if($n === 1) {
 			$out .= getCustomData('MarkupGoogleMap', '.min', $this->config->urls->MarkupGoogleMap);
-			$out .= getCustomData('richmarker', '-compiled', $this->config->urls->MarkupGoogleMap);
+			$out .= getCustomData('richmarker', '.min', $this->config->urls->MarkupGoogleMap);
 		}
 
 		// The Map itself
@@ -339,7 +260,7 @@ var {$id} = new MarkupGoogleMap();
 {$js_icon};
 {$js_hover};
 {$id}.init("{$id}", {$lat}, {$lng});
-window.setTimeout(function(){ {$id}.specialStyles(); }, 666);
+window.setTimeout(function(){ {$id}.specialStyles(); }, 888);
 EOT;
 
 		// Se itera un pageArray y se saca cada Marker -> RichMarker.
