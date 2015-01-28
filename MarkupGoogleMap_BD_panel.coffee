@@ -27,9 +27,9 @@ map.fitToMarkers();
 ###
 MarkupGoogleMap = undefined
 
-# SHOWN ON FRONTEND 
+# SHOWN ON FRONTEND
 (($, undefined_) ->
-  
+
   #"use strict"
 
   MY_MAPTYPE_ID = "BOXCALF"
@@ -58,7 +58,7 @@ MarkupGoogleMap = undefined
       mapTypeId: MY_MAPTYPE_ID
       scaleControl: false
 
-    
+
     ###
         mapResponse = []
         $.getJSON "http://localhost/dropbox/boxcalf.es/site/modules/FieldtypeMapMarker/mapStyle.json", (data) ->
@@ -67,7 +67,7 @@ MarkupGoogleMap = undefined
           return
         @styles = mapResponse
     ###
-        
+
 
     @styles = [
       {
@@ -180,7 +180,7 @@ MarkupGoogleMap = undefined
         ]
       }
     ]
-    
+
     ###
     # VARS
     ###
@@ -201,14 +201,14 @@ MarkupGoogleMap = undefined
 
     @init = (mapID, lat, lng) ->
       @options.center = new google.maps.LatLng(lat, lng)  if lat isnt 0
-      
+
       # Create a new StyledMapType object, passing it the array of styles,
       # as well as the name to be displayed on the map type control.
       @styledMap = new google.maps.StyledMapType(@styles, @styledMapOptions)
-      
+
       # Original
       @map = new google.maps.Map(document.getElementById(mapID), @options)
-      
+
       #Associate the styled map with the MapTypeId and set it to display.
       @map.mapTypes.set MY_MAPTYPE_ID, @styledMap
       @map.setMapTypeId MY_MAPTYPE_ID
@@ -231,7 +231,7 @@ MarkupGoogleMap = undefined
       @hoverBoxOffsetTop = parseInt($hoverBox.attr("data-top"))
       @hoverBoxOffsetLeft = parseInt($hoverBox.attr("data-left"))
       $("body").append $hoverBox
-      
+
       # keep it hidden/out of the way until needed
       $hoverBox.css
         position: "absolute"
@@ -308,7 +308,7 @@ MarkupGoogleMap = undefined
       return  if lat is 0.0
       latLng = new google.maps.LatLng(lat, lng)
       zIndex = 99990 + @numMarkers
-      
+
       #https://www.google.es/maps?f=q&source=embed&hl=es&sll=43.262049,-2.934293&hq=BOXCALF,+Elcano+11,&hnear=Bilbao,+Vizcaya
       #https://www.google.es/maps?f=q&source=embed&hl=es&geocode&q=BOXCALF,+Elcano+11,+bilbao&sll=43.262049,-2.934293&sspn=0.008524,0.009913&ie=UTF8&hq=BOXCALF,+Elcano+11,&hnear=Bilbao,+Vizcaya,+Pa%C3%ADs+Vasco&t=h&layer=c&cbll=43.262007,-2.934419&panoid=30g6A51Zz7TFxuZEfVomUQ&cbp=13,50.56,,0,7.09&ll=43.258198,-2.932749&spn=0.00972,0.009871&z=15
       panelTitle = title
@@ -353,7 +353,7 @@ MarkupGoogleMap = undefined
         i++
 
       map.fitBounds bounds
-      
+
       listener = google.maps.event.addListener(map, "idle", ->
         map.setZoom 2  if map.getZoom() < 2
         google.maps.event.removeListener listener
